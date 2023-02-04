@@ -34,7 +34,7 @@ type ChildrenTypeProps = {
 export function ProductContextProvider({children}:ChildrenTypeProps){
 
     const [products, setProducts] = useState<State[]>(() => {
-        const getItems =  localStorage.getItem("@ignite-coffee:coffee-state");
+        const getItems = localStorage.getItem("@ignite-coffee:coffee-state");
         if(getItems){
          return JSON.parse(getItems)
         }

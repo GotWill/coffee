@@ -53,7 +53,7 @@ export function Home() {
 
                     </C.InfoContent>
                 </div>
-                <div>
+                <div className='imgCoffe'>
                     <img src={ImgCoffee} />
                 </div>
             </C.Container>

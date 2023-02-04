@@ -3,6 +3,7 @@ import { useContext, useState } from "react"
 import { ProductContext } from "../../contexts/ProductContext"
 import { Product } from "../../types/Product"
 import * as C from './styles'
+import { formatValue } from "../../helpers"
 
 type CoffeeProps = {
     item: Product
@@ -43,9 +44,6 @@ export function Count({item}: CoffeeProps) {
       
     }
 
-    function changeValue(value: number) {
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-    }
     return (
         <C.ProductList key={item.id}>
 
@@ -76,7 +74,7 @@ export function Count({item}: CoffeeProps) {
                 </div>
             </div>
             <div>
-                <span>{changeValue(item.value)}</span>
+                <span>{formatValue(item.value)}</span>
             </div>
         </C.ProductList>
     )

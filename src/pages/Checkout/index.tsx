@@ -1,32 +1,25 @@
-import { MapPinLine, Trash, CurrencyDollar, CreditCard, Bank, Money } from 'phosphor-react'
+import { MapPinLine, CurrencyDollar, CreditCard, Bank, Money } from 'phosphor-react'
 import * as C from './styles'
 import { Link } from 'react-router-dom'
 import { ProductContext } from '../../contexts/ProductContext'
 import { FormActions, useForm } from '../../contexts/UserFormContext'
-import { ChangeEvent, useContext, useState } from 'react'
+import { ChangeEvent, useContext } from 'react'
 import { SelectOptions } from '../../components/SelectOptions'
 import { Count } from '../../components/Count'
+import { formatValue } from '../../helpers'
 
 
 export function Checkout() {
 
     const { dispatch, state } = useForm();
-    const [count, setCount] = useState(0);
 
-    const { products, updateProductList, coffeesAddCheck, addCoffeeTotal } = useContext(ProductContext)
+    const { products, coffeesAddCheck } = useContext(ProductContext)
 
     
     const valueCoffeesCheck = coffeesAddCheck.reduce((acc, item) => acc + item.value, 0)
     const valueProducts = products.reduce((acc, item) => acc + item.value, 0)
     const totalPrice = valueProducts + 3.50 + valueCoffeesCheck
-    const priceFormated = totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-   
-
-
-    function changeValue(value: number) {
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-    }
+    const priceFormated = formatValue(totalPrice)
 
     function handleCepChange(e: ChangeEvent<HTMLInputElement>) {
         dispatch({
@@ -168,7 +161,7 @@ export function Checkout() {
                             </div>
                             <div>
                                 <span>Entrega</span>
-                                <span>{changeValue(3.50)}</span>
+                                <span>{formatValue(3.50)}</span>
                             </div>
                             <div>
                                 <h2>Total</h2>

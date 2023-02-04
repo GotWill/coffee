@@ -7,6 +7,10 @@ display: flex;
 flex-wrap: wrap;
 gap: 2rem;
 
+@media (max-width: 768px) {
+    justify-content: center;
+}
+
 
 .coffee{
     width: 256px;

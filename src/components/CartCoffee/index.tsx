@@ -1,9 +1,9 @@
 import * as C from './styles'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { ShoppingCart } from 'phosphor-react'
 import { Product } from '../../types/Product'
 import { ProductContext } from '../../contexts/ProductContext'
-import Alert from 'react-bootstrap/Alert';
+import { formatValue } from '../../helpers'
 
 type Props = {
     item: Product;
@@ -13,10 +13,17 @@ type Props = {
 
 export function CartCoffee({ item }: Props) {
 
+   
+
+
     const { products, updateProductList } = useContext(ProductContext)
 
     const [count, setCount] = useState(0)
 
+    useEffect(() => {
+        const stateJSON = JSON.stringify(count)
+        const saveCountStorage = localStorage.setItem('@count-coffee-ignite', stateJSON)
+    }, [count])
 
     function countAddCart() {
 
@@ -49,10 +56,6 @@ export function CartCoffee({ item }: Props) {
             updateProductList(newProductsFiltered)
             setCount((state) => state - 1)
         }
-    }
-
-    function itemPrice(item: number) {
-        return item.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
     return (
         <C.ListCoffe>
@@ -93,7 +96,7 @@ export function CartCoffee({ item }: Props) {
 
                 <div className='footer'>
                     <div>
-                        <span className='value'>{itemPrice(item.value)}</span>
+                        <span className='value'>{formatValue(item.value)}</span>
                     </div>
                     <div className='footer-d-flex'>
                         <div className='count'>

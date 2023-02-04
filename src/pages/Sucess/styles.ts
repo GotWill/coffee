@@ -11,6 +11,14 @@ export const Container = styled.div`
         font-size: 32px;
         color: #C47F17;
     }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+
+      .img img {
+        width: 100%;
+      }
+    }
 `
 
 export const CardInfos = styled.div`
@@ -20,14 +28,18 @@ gap: 32px;
 width: 526px;
 height: 270px;
 
+@media (max-width: 767px){
+  width: 300px !important;
+
+}
+
  border-radius: 6px 36px;
-  border: 1px solid red;
+border: 1px solid red;
 
   .d-flex{
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    /* margin: 1rem 0; */
     padding: 10px 0;
 
   }

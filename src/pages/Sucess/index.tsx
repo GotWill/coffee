@@ -65,7 +65,7 @@ export function Sucess() {
                     </div>
                 </C.CardInfos>
             </div>
-            <div>
+            <div className='img'>
                 <img src={img} alt="" />
             </div>
         </C.Container>

@@ -6,6 +6,11 @@ justify-content: space-between;
 align-items: center;
 width: 100%;
 
+@media (max-width: 900px) {
+    padding: 0 0.7rem;
+}
+
+
 .d-flex{
     display: flex;
     align-items: center;
@@ -27,6 +32,7 @@ border-radius: 6px;
 padding: 8px;
 display: flex;
 align-items: center;
+}
 
 .absolute{
     position: absolute;
@@ -44,6 +50,5 @@ align-items: center;
     align-items: center;
 }
 
-}
 
 `

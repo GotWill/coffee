@@ -7,6 +7,10 @@ align-items: baseline;
 margin-top: 50px;
 margin-bottom: 50px;
 
+@media (max-width: 1000px) {
+    flex-direction: column;
+    justify-content: center;
+}
 
 `
 
@@ -44,6 +48,10 @@ flex-direction: column;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+
+    @media (max-width: 767px){
+        flex-direction: column;
+    }
 }
 `
 

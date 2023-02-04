@@ -25,7 +25,17 @@ export const Container = styled.div`
 
     }
 
-   
+   @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 20px;
+    
+    .imgCoffe img {
+        width: 280px;
+    }
+   }
+
+  
 ;
 `
 
@@ -35,6 +45,10 @@ display: flex;
 align-items: center;
 justify-content: space-around ;
 gap: 1.9rem;
+
+@media (max-width: 768px){
+    display: inherit !important;
+}
 
 .d-flex{
    display: flex;
@@ -46,6 +60,8 @@ gap: 1.9rem;
     display: flex;
     align-items: center;
    }
+
+
 }
 
 .coffe-mt{
