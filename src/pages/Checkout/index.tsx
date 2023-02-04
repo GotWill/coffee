@@ -1,13 +1,88 @@
 import { MapPinLine, Trash, CurrencyDollar, CreditCard, Bank, Money } from 'phosphor-react'
 import * as C from './styles'
-import coffee from '../../assets/coffee/coffee-1.png'
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
 import { ProductContext } from '../../contexts/ProductContext'
+import { FormActions, useForm } from '../../contexts/UserFormContext'
+import { ChangeEvent, useContext, useState } from 'react'
+import { SelectOptions } from '../../components/SelectOptions'
+import { Count } from '../../components/Count'
+
 
 export function Checkout() {
-    const { products } = useContext(ProductContext)
-    console.log(products)
+
+    const { dispatch, state } = useForm();
+    const [count, setCount] = useState(0);
+
+    const { products, updateProductList, coffeesAddCheck, addCoffeeTotal } = useContext(ProductContext)
+
+    
+    const valueCoffeesCheck = coffeesAddCheck.reduce((acc, item) => acc + item.value, 0)
+    const valueProducts = products.reduce((acc, item) => acc + item.value, 0)
+    const totalPrice = valueProducts + 3.50 + valueCoffeesCheck
+    const priceFormated = totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+   
+
+
+    function changeValue(value: number) {
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    }
+
+    function handleCepChange(e: ChangeEvent<HTMLInputElement>) {
+        dispatch({
+            type: FormActions.setCep,
+            payload: e.target.value
+        })
+    }
+
+    function handleRuaChange(e: ChangeEvent<HTMLInputElement>) {
+        dispatch({
+            type: FormActions.setRua,
+            payload: e.target.value
+        })
+    }
+    function handleNumeroChange(e: ChangeEvent<HTMLInputElement>) {
+        dispatch({
+            type: FormActions.setNumero,
+            payload: e.target.value
+        })
+    }
+    function handleComplementoChange(e: ChangeEvent<HTMLInputElement>) {
+        dispatch({
+            type: FormActions.setComplemento,
+            payload: e.target.value
+        })
+    }
+    function handleBairroChange(e: ChangeEvent<HTMLInputElement>) {
+        dispatch({
+            type: FormActions.setBairro,
+            payload: e.target.value
+        })
+    }
+    function handleCidadeChange(e: ChangeEvent<HTMLInputElement>) {
+        dispatch({
+            type: FormActions.setCidade,
+            payload: e.target.value
+        })
+    }
+    function handleUfChange(e: ChangeEvent<HTMLInputElement>) {
+        dispatch({
+            type: FormActions.setUf,
+            payload: e.target.value
+        })
+    }
+
+    function setLevel(setButtonSeleted: number) {
+        dispatch({
+            type: FormActions.setButtonSeleted,
+            payload: setButtonSeleted
+        })
+    }
+
+   
+
+
+
     return (
         <C.Container>
             <div>
@@ -24,16 +99,16 @@ export function Checkout() {
                     </div>
 
                     <C.AreaForm>
-                        <C.Input width='200px' placeholder='CEP' />
-                        <C.Input width='100%' placeholder='Rua' />
+                        <C.Input width='200px' placeholder='CEP' onChange={handleCepChange} value={state.cep} />
+                        <C.Input width='100%' placeholder='Rua' onChange={handleRuaChange} value={state.rua} />
                         <div className='input-group'>
-                            <C.Input width='200px' placeholder='Número' />
-                            <C.Input width='100%' placeholder='Complemento' />
+                            <C.Input width='200px' placeholder='Número' onChange={handleNumeroChange} value={state.numero} />
+                            <C.Input width='100%' placeholder='Complemento' onChange={handleComplementoChange} value={state.complemento} />
                         </div>
                         <div className='input-group'>
-                            <C.Input width='200px' placeholder='Bairro' />
-                            <C.Input width='252px' placeholder='Cidade' />
-                            <C.Input width='60px' placeholder='UF' />
+                            <C.Input width='200px' placeholder='Bairro' onChange={handleBairroChange} value={state.bairro} />
+                            <C.Input width='252px' placeholder='Cidade' onChange={handleCidadeChange} value={state.cidade} />
+                            <C.Input width='60px' placeholder='UF' onChange={handleUfChange} value={state.uf} />
                         </div>
                     </C.AreaForm>
 
@@ -47,23 +122,31 @@ export function Checkout() {
                         </div>
                     </div>
 
-                    <C.CardPayment>
-                        <div>
-                            <CreditCard size={14} color="#8047F8" />
-                            CARTÃO DE CRÉDITO
-                        </div>
-                        <div>
-                            <Bank size={14} color="#8047F8" />
-                            CARTÃO DE DÉBITO
-                        </div>
-                        <div>
-                            <Money size={14} color="#8047F8" />
-                            DINHEIRO
-                        </div>
-                    </C.CardPayment>
+
+
+                    <div style={{ display: 'flex' }}>
+                        <SelectOptions
+                            title='CARTÃO DE CRÉDITO'
+                            selected={state.buttonSeleted === 0}
+                            onClickBorder={() => setLevel(0)}
+                            icon={<CreditCard size={24}  color="#8047F8"/>}
+
+                        />
+                        <SelectOptions
+                            title=' CARTÃO DE DÉBITO'
+                            onClickBorder={() => setLevel(1)}
+                            selected={state.buttonSeleted === 1}
+                            icon={<Bank size={24}  color="#8047F8"/>}
+                        />
+                        <SelectOptions
+                            title=' DINHEIRO'
+                            onClickBorder={() => setLevel(2)}
+                            selected={state.buttonSeleted === 2}
+                            icon={<Money size={24} color="#8047F8"/>}
+                        />
+                    </div>
+
                 </C.PaymentInfos>
-
-
             </div>
             <div>
                 <h1>Cafés selecionados</h1>
@@ -71,95 +154,59 @@ export function Checkout() {
 
                     {products.map((item) => {
                         return (
-                            <>
-                                <C.ProductList>
-
-                                    <div>
-                                        <img src={item.imgPath} alt={item.title} />
-                                    </div>
-                                    <div>
-                                        <div>
-                                            <h3>{item.title}</h3>
-                                        </div>
-                                        <div className='details-products'>
-                                            <div className='count'>
-                                                <button>-</button>
-                                                <span>1</span>
-                                                <button>+</button>
-                                            </div>
-
-                                            <div className='removeIcon'>
-                                                <button>
-                                                    <Trash size={16} color="#8047F8" />
-                                                    <span>REMOVER</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <span>R$ {item.value}</span>
-                                    </div>
-                                </C.ProductList>
-                            </>
+                            <Count item={item} key={item.id}/>
 
                         )
                     })}
 
 
-                    {/* <C.LineBorder /> */}
-                    {/* <C.ProductList margin='30px'>
-                        <div>
-                            <img src={coffee} alt="" />
-                        </div>
-                        <div>
-                            <div>
-                                <h3>Expresso Tradicional</h3>
-                            </div>
-                            <div className='details-products'>
-                                <div className='count'>
-                                    <button>-</button>
-                                    <span>1</span>
-                                    <button>+</button>
-                                </div>
-
-                                <div className='removeIcon'>
-                                    <button>
-                                        <Trash size={16} color="#8047F8" />
-                                        <span>REMOVER</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <span>R$ 9,90</span>
-                        </div>
-                    </C.ProductList>
-                    <C.LineBorder /> */}
-
-                    {products.length > 0 &&
-
+                    {products.length > 0 ? (
                         <C.ReseumeProduct>
                             <div>
                                 <span>Total de itens</span>
-                                <span>R$ 29,70</span>
+                                <span>{priceFormated}</span>
                             </div>
                             <div>
                                 <span>Entrega</span>
-                                <span>R$ 3,50</span>
+                                <span>{changeValue(3.50)}</span>
                             </div>
                             <div>
                                 <h2>Total</h2>
-                                <span>R$ 33,20</span>
+                                <span>{priceFormated}</span>
                             </div>
 
                             <div className='btn'>
                                 <Link to="/sucess">
-                                    <button>CONFIRMAR PEDIDO</button>
+                                    <button disabled={!state.cep}>CONFIRMAR PEDIDO</button>
                                 </Link>
 
                             </div>
                         </C.ReseumeProduct>
+                    ) : (
+                        <div>
+                            <C.ReseumeProduct>
+                                <div>
+                                    <span>Total de itens</span>
+                                    <span>R$ 0</span>
+                                </div>
+                                <div>
+                                    <span>Entrega</span>
+                                    <span>R$ 0</span>
+                                </div>
+                                <div>
+                                    <h2>Total</h2>
+                                    <span>R$ 0</span>
+                                </div>
 
+                                <div className='btn'>
+                                    <Link to="/sucess">
+                                        <button disabled={products.length === 0}>CONFIRMAR PEDIDO</button>
+                                    </Link>
+
+                                </div>
+                            </C.ReseumeProduct>
+                        </div>
+                    )
                     }
 
 

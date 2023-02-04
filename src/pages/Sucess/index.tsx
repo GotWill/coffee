@@ -1,8 +1,19 @@
 import { MapPin, Timer, CurrencyDollar } from 'phosphor-react'
 import * as C from './styles'
 import img from '../../assets/Illustration.png'
+import { useForm } from '../../contexts/UserFormContext'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export function Sucess() {
+    const { state } = useForm()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (state.cep === "" || state.rua === "" || state.complemento === "" || state.uf === "") {
+            navigate("/")
+        }
+    })
     return (
         <C.Container>
             <div>
@@ -15,7 +26,8 @@ export function Sucess() {
                             <MapPin size={15} color="white" />
                         </C.CircleIcon>
                         <div>
-                            Entrega em Rua João Daniel Martinelli, 102Farrapos - Porto Alegre, RS
+                            Entrega em <strong>{state.rua}, {state.numero}</strong><br>
+                            </br> {state.bairro} - {state.cidade}, {state.uf}
                         </div>
                     </div>
 
@@ -26,8 +38,8 @@ export function Sucess() {
 
                         </C.CircleIcon>
                         <div>
-                          <span> Previsão de entrega</span> <br></br>
-                          <strong> 20 min - 30 min</strong>
+                            <span> Previsão de entrega</span> <br></br>
+                            <strong> 20 min - 30 min</strong>
                         </div>
                     </div>
 
@@ -36,8 +48,19 @@ export function Sucess() {
                             <CurrencyDollar size={15} color="#FFF" />
                         </C.CircleIcon>
                         <div>
-                           <span>Pagamento na entrega</span><br></br>
-                           <strong>Cartão de Crédito</strong>
+                            <span>Pagamento na entrega</span><br></br>
+                            {state.buttonSeleted === 0 &&
+                                <strong>Cartão de Crédito</strong>
+                            }
+
+                            {state.buttonSeleted === 1 &&
+                                <strong>Cartão de Débito</strong>
+                            }
+
+                            {state.buttonSeleted === 2 &&
+                                <strong>Dinheiro</strong>
+                            }
+
                         </div>
                     </div>
                 </C.CardInfos>

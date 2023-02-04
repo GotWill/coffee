@@ -1,10 +1,9 @@
 import * as C from './styles'
 import ImgCoffee from '../../assets/coffee.png'
 import { ShoppingCart, Package, Timer, Coffee } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { CartCoffee } from '../../components/CartCoffee'
 import { item } from '../../data/Item'
-import { Product } from '../../types/Product'
 
 export function Home() {
 
@@ -63,8 +62,7 @@ export function Home() {
                 <h1>Nossos cafés</h1>
                 <C.ListCoffe>
                     {list.map((item, key) => {
-                        return  <CartCoffee item={item} key={key} />
-                        
+                        return  <CartCoffee item={item} key={key} /> 
                     })}
                 </C.ListCoffe>
 

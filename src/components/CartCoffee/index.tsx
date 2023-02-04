@@ -1,9 +1,9 @@
 import * as C from './styles'
 import { useContext, useState } from 'react'
 import { ShoppingCart } from 'phosphor-react'
-import { Link } from 'react-router-dom'
 import { Product } from '../../types/Product'
 import { ProductContext } from '../../contexts/ProductContext'
+import Alert from 'react-bootstrap/Alert';
 
 type Props = {
     item: Product;
@@ -11,22 +11,14 @@ type Props = {
 
 
 
-export function CartCoffee({item}: Props) {
+export function CartCoffee({ item }: Props) {
 
-    const {products, updateProductList} = useContext(ProductContext)
-    console.log(products.length)
+    const { products, updateProductList } = useContext(ProductContext)
 
-    const [count, setCount] = useState(1)
-    // const [listProducts, setListProducts] = useState<Product[]>([])
+    const [count, setCount] = useState(0)
 
 
-    function countSub() {
-        if (count > 1) {
-            setCount((state) => state - 1)
-        }
-    }
-
-    function countAddCart(){
+    function countAddCart() {
 
         const newList = [...products]
 
@@ -42,60 +34,84 @@ export function CartCoffee({item}: Props) {
         })
         updateProductList(newList)
 
-        setCount((state) => state + 1)
+        alert("Produto adicionado a lista")
+
+
+
+
+    }
+
+    function removeItem(id: number) {
+
+
+        if (count > 0) {
+            const newProductsFiltered = products.filter((item) => item.id !== id)
+            updateProductList(newProductsFiltered)
+            setCount((state) => state - 1)
+        }
+    }
+
+    function itemPrice(item: number) {
+        return item.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
     return (
         <C.ListCoffe>
-                    <div className='coffee' key={item.id}>
-                        <div className='img'>
-                            <img src={item.imgPath} />
-                        </div>
-                        <div className='textBg'>
-                            {item.slug1 &&
-                                <div>
-                                    {item.slug1}
-                                </div>
-                            }
-
-                            {item.slug1 && item.slug2 &&
-                                <>
-                                    <div>
-                                        {item.slug1}
-                                    </div>
-                                    <div>
-                                        {item.slug2}
-                                    </div>
-                                </>
-
-                            }
-                        </div>
-
-                        <div className='info'>
-                            <h2>{item.title}</h2>
-                            <p>
-                                {item.description}
-                            </p>
-                        </div>
-
-                        <div className='footer'>
+            <div className='coffee'>
+                <div className='img'>
+                    <img src={item.imgPath} />
+                </div>
+                <div className='textBg'>
+                    {
+                        item.slug1 && (
                             <div>
-                                R$ <span className='value'>{item.value}</span>
+                                {item.slug1}
                             </div>
-                            <div className='footer-d-flex'>
-                                <div className='count'>
-                                    <button onClick={countSub}>-</button>
-                                    <h4>{count}</h4>
-                                    <button onClick={countAddCart}>+</button>
-                                </div>
-                                <div className='circleCart'>
-                                    <Link to="/checkout">
-                                        <ShoppingCart size={24} color="#F3F2F2" />
-                                    </Link>
+                        )
+                    }
+                    {
+                        item.slug2 && (
+                            <div>
+                                {item.slug2}
+                            </div>
+                        )
+                    }
+                    {
+                        item.slug3 && (
+                            <div>
+                                {item.slug3}
+                            </div>
+                        )
+                    }
+                </div>
 
-                                </div>
-                            </div>
-                        </div>
+                <div className='info'>
+                    <h2>{item.title}</h2>
+                    <p>
+                        {item.description}
+                    </p>
+                </div>
+
+                <div className='footer'>
+                    <div>
+                        <span className='value'>{itemPrice(item.value)}</span>
                     </div>
+                    <div className='footer-d-flex'>
+                        <div className='count'>
+                            <button onClick={() => {
+                                removeItem(item.id);
+                            }}>-</button>
+                            <h4>{count}</h4>
+                            <button onClick={() => setCount((state) => state + 1)}>+</button>
+                        </div>
+                        <button disabled={!count} className='btn-card' onClick={countAddCart}>
+                            <div className='circleCart'>
+                                <ShoppingCart size={24} color="#F3F2F2" />
+                            </div>
+                        </button>
+                       
+                    </div>
+                </div>
+            </div>
         </C.ListCoffe>
     )
 }

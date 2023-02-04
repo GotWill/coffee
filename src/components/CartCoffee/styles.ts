@@ -6,7 +6,7 @@ margin-top: 40px;
 display: flex;
 flex-wrap: wrap;
 gap: 2rem;
-margin-bottom: 50px;
+
 
 .coffee{
     width: 256px;
@@ -76,9 +76,19 @@ margin-bottom: 50px;
     align-items: center;
     margin-top: 1rem;
 
+    .btn-card{
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+    }
+    .btn-card:disabled{
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
     .value{
         font-weight: 800;
-        font-size: 30px;
+        font-size: 24px;
         color: #574F4D;
     }
 .footer-d-flex{
@@ -96,6 +106,10 @@ margin-bottom: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    button{
+        border: none !important;
+    }
 }
 }
 

@@ -72,7 +72,7 @@ outline: none;
 export const BoxRight = styled.div`
 margin-top: 25px;
 width: 448px;
-height: 498px;
+
 background: #F3F2F2;
 border-radius: 6px 44px;
 padding:28px 40px;
@@ -183,6 +183,10 @@ export const ReseumeProduct = styled.div`
             cursor: pointer;
             color: #FFFFFF;
             font-weight: bold;
+ }
+ button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6
  }
     }
 `
